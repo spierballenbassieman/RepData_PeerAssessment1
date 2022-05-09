@@ -9,12 +9,46 @@ output:
 # Loading and preprocessing the data
 
 
+```r
+#install.packages("data.table")
+library("data.table")
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(lattice)
+
+
+filename <- "activity.zip"
+
+if (!file.exists("activity.csv")) {
+  unzip(filename)
+}
+
+# store as data.frame
+data = read.csv("activity.csv", header=TRUE, sep = ",")
+
+# transform data.frame to data.table
+#tbl <- tbl_df(data)
+tbl <- setDT(data)
+
+
+# convert date of type character to type Date
+tbl$date <- as.Date(as.character(tbl$date), "%Y-%m-%d")
+```
 
 
 ## What is mean total number of steps taken per day?
 
 
 ### create table of sums of steps per day
+
+```r
+#table <- tapply(tbl$steps, tbl$date, FUN=sum)
+total_steps_per_day <- tbl %>%
+  group_by(date) %>%
+  summarise(total = sum(steps))
+total_steps_per_day
+```
 
 ```
 ## # A tibble: 61 × 2
@@ -217,7 +251,7 @@ They do not differ a lot.
 
 # Are there differences in activity patterns between weekdays and weekends?
 
-### Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+### Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.s
 
 
 ```r

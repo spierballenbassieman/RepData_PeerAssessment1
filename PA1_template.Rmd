@@ -8,7 +8,7 @@ output:
 
 # Loading and preprocessing the data
 
-```{r include = FALSE}
+```{r}
 #install.packages("data.table")
 library("data.table")
 library(ggplot2)
@@ -41,7 +41,7 @@ tbl$date <- as.Date(as.character(tbl$date), "%Y-%m-%d")
 
 
 ### create table of sums of steps per day
-```{r echo=FALSE}
+```{r echo=TRUE}
 #table <- tapply(tbl$steps, tbl$date, FUN=sum)
 total_steps_per_day <- tbl %>%
   group_by(date) %>%
@@ -201,7 +201,7 @@ They do not differ a lot.
 
 # Are there differences in activity patterns between weekdays and weekends?
 
-### Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+### Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.s
 
 ```{r}
 weekday <- c("maandag", "dinsdag", "woensdag", "donderdag", "vrijdag")

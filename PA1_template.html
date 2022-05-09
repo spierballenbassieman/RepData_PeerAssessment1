@@ -369,10 +369,39 @@ pre code {
 
 <div id="loading-and-preprocessing-the-data" class="section level1">
 <h1>Loading and preprocessing the data</h1>
+<pre class="r"><code>#install.packages(&quot;data.table&quot;)
+library(&quot;data.table&quot;)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(lattice)
+
+
+filename &lt;- &quot;activity.zip&quot;
+
+if (!file.exists(&quot;activity.csv&quot;)) {
+  unzip(filename)
+}
+
+# store as data.frame
+data = read.csv(&quot;activity.csv&quot;, header=TRUE, sep = &quot;,&quot;)
+
+# transform data.frame to data.table
+#tbl &lt;- tbl_df(data)
+tbl &lt;- setDT(data)
+
+
+# convert date of type character to type Date
+tbl$date &lt;- as.Date(as.character(tbl$date), &quot;%Y-%m-%d&quot;)</code></pre>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
 <div id="create-table-of-sums-of-steps-per-day" class="section level3">
 <h3>create table of sums of steps per day</h3>
+<pre class="r"><code>#table &lt;- tapply(tbl$steps, tbl$date, FUN=sum)
+total_steps_per_day &lt;- tbl %&gt;%
+  group_by(date) %&gt;%
+  summarise(total = sum(steps))
+total_steps_per_day</code></pre>
 <pre><code>## # A tibble: 61 × 2
 ##    date       total
 ##    &lt;date&gt;     &lt;int&gt;
@@ -519,10 +548,10 @@ of the total daily number of steps?</h2>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level1">
 <h1>Are there differences in activity patterns between weekdays and
 weekends?</h1>
-<div id="create-a-new-factor-variable-in-the-dataset-with-two-levels-weekday-and-weekend-indicating-whether-a-given-date-is-a-weekday-or-weekend-day." class="section level3">
+<div id="create-a-new-factor-variable-in-the-dataset-with-two-levels-weekday-and-weekend-indicating-whether-a-given-date-is-a-weekday-or-weekend-day.s" class="section level3">
 <h3>Create a new factor variable in the dataset with two levels –
 “weekday” and “weekend” indicating whether a given date is a weekday or
-weekend day.</h3>
+weekend day.s</h3>
 <pre class="r"><code>weekday &lt;- c(&quot;maandag&quot;, &quot;dinsdag&quot;, &quot;woensdag&quot;, &quot;donderdag&quot;, &quot;vrijdag&quot;)
 weekend &lt;- c(&quot;vrijdag&quot;, &quot;zaterdag&quot;, &quot;zondag&quot;)
 
